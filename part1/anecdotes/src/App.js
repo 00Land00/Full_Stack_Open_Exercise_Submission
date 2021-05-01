@@ -17,10 +17,16 @@ const App = () => {
   const [votes, setVote] = useState(anecdotes.map(value => 0))
   const [selected, setSelected] = useState(randomIndex(anecdotes.length))
 
+  // generate the states for most voted anecdote (by index in the anecdotes array)
+  const [mostVotes, setMV] = useState(selected)
+
   // event handler for cast_vote button
   const castVote = (index) => {
     const temp = [...votes]
     temp[index] += 1
+    if(temp[index] > temp[mostVotes]){
+      setMV(index)
+    }
     setVote(temp)
   }
   // event handler for next_anecdote button
@@ -28,12 +34,18 @@ const App = () => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <br />
       has {votes[selected]} votes
       <br />
       <button onClick={() => castVote(selected)}>vote</button>
       <button onClick={nextAnecdote}>next anecdote</button>
+
+      <h1>Anecdote with most votes</h1>
+      {anecdotes[mostVotes]}
+      <br />
+      has {votes[mostVotes]} votes
     </div>
   )
 }
