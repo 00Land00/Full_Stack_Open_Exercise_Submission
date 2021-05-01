@@ -13,25 +13,19 @@ const App = () => {
 
   return (
     <div>
-      <Title title="give feedback" />
+      <h1>give feedback</h1>
       <Button text="good" event_handler={setG} />
       <Button text="neutral" event_handler={setN} />
       <Button text="bad" event_handler={setB} />
 
-      <Stat_Header s_title="statistics" />
+      <h2>statistics</h2>
       <Statistics g={good} n={neutral} b={bad} />
     </div>
   )
 }
 
-// component to display header
-const Title = ({title}) => <h1><strong>{title}</strong></h1>
-
 // component to display buttons and pass in their eventhandlers
 const Button = ({text, event_handler}) => <button onClick={event_handler}>{text}</button>
-
-// component to display secondary header
-const Stat_Header = ({s_title}) => <h2><strong>{s_title}</strong></h2>
 
 // components to display the statistics
 // xt={x} text; x={x} state;
@@ -39,17 +33,31 @@ const Statistics = ({g, n, b}) => {
   const sum = g+n+b
   const score = g-b
   const avg = score / sum
-  const pos = g / sum
+  const pos = (g / sum) * 100 + " %"
+  if(sum === 0){
+    return (
+      <p>No feedback given</p>
+    )
+  }
+
   return (
-    <>
-    <p>good {g}</p>
-    <p>neutral {n}</p>
-    <p>bad {b}</p>
-    <p>all {sum}</p>
-    <p>average {avg}</p>
-    <p>positive {pos} %</p>
-    </>
+    <table>
+      <tbody>
+        <tr><Statistic text="good" value={g} /></tr>
+        <tr><Statistic text="neutral" value={n} /></tr>
+        <tr><Statistic text="bad" value={b} /></tr>
+        <tr><Statistic text="all" value={sum} /></tr>
+        <tr><Statistic text="average" value={avg} /></tr>
+        <tr><Statistic text="negative" value={pos} /></tr>
+      </tbody>
+    </table>
   )
 }
 
+const Statistic = ({text, value}) => (
+  <>
+  <td>{text}</td>
+  <td>{value}</td>
+  </>
+)
 export default App
