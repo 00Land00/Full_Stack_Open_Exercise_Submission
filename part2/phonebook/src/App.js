@@ -8,11 +8,17 @@ const App = () => {
 
   // event handler for the form
   const submitName = (event) => {
+    const nameExist = persons.find(p => p.name === newName)
+    if(nameExist !== undefined){
+      window.alert(`${newName} was already added to the phonebook`)
+      return
+    }
     event.preventDefault()
     const person = {
       name: newName
     }
     setPersons(persons.concat(person))
+    setNewName('')
   }
   // event handler for the input
   const handleNameChange = (event) => {
