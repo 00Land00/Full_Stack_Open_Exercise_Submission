@@ -12,10 +12,10 @@ const App = () => {
   // we need effect to get the data from this link: https://restcountries.eu/rest/v2/all
   useEffect(() => {
     axios
-      .get('https://restcountries.eu/rest/v2/all')
-      .then((response => {
-        setCountries(response.data)
-      }))
+    .get('https://restcountries.eu/rest/v2/all')
+    .then((response => {
+      setCountries(response.data)
+    }))
   }, [])
 
   // we need event handlers
