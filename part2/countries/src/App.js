@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import Countries from './components/Countries'
+
 const App = () => {
   // we need states to store the data from the server
   const [countries, setCountries] = useState([])
@@ -30,39 +32,6 @@ const App = () => {
     <div>
       find countries <input value={st} onChange={handleSTChange} />
       <Countries filteredCountries={fC} />
-    </div>
-  ) // 
-}
-
-const Countries = ({filteredCountries}) => {
-  let fCD = filteredCountries.map(country => <div key={country.numericCode}>{country.name}</div>)
-
-  if(filteredCountries.length > 10) {
-    fCD = 'Too many matches, specify another filter'
-  }
-  if(filteredCountries.length === 0){
-    fCD = 'No matching results, try another filter'
-  }
-
-  if(filteredCountries.length === 1){
-    fCD = (
-      <>
-        <h1>{filteredCountries[0].name}</h1>
-        <div>capital {filteredCountries[0].capital}</div>
-        <div>population {filteredCountries[0].population}</div>
-
-        <h3>languages</h3>
-        <ul>
-          {filteredCountries[0].languages.map(language => <li key={language.name}>{language.name}</li>)}
-        </ul>
-        <img src={filteredCountries[0].flag} alt={`flag of ${filteredCountries[0].name}`} width={200} />
-      </>
-    )
-  }
-
-  return (
-    <div>
-      {fCD}
     </div>
   )
 }
