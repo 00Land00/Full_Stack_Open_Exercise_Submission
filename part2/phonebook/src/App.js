@@ -31,9 +31,7 @@ const App = () => {
   }, [])
 
   // state for storing data passed by user input (these ones are dummy data for testing purposes)
-  const [persons, setPersons] = useState([{
-    name: '', number: ''
-  }])
+  const [persons, setPersons] = useState([])
   // event handler for the form
   const submitInfo = (event) => {
     event.preventDefault()
@@ -57,6 +55,13 @@ const App = () => {
         setNewNumber('')
       })
   }
+  const handleDeleteEntry = (person) => {
+    if(window.confirm(`are you sure you want to delete ${person.name} from the phonebook?`)) {
+      Entries
+        .deleteEntry(person.id)
+        .then(response => setPersons(persons.filter(p => p.id !== person.id)))
+    }
+  }
 
   // state for storing changes in the name and phone number input field and their event handler
   const [ newName, setNewName ] = useState('')
@@ -68,7 +73,8 @@ const App = () => {
   const [ newST, setST ] = useState('')    
   const handleSTChange = (event) => setST(event.target.value)
 
-  const matchedPeople = (persons !== undefined) ? persons.filter(person => person.name.toUpperCase().includes(newST.toUpperCase())) : undefined
+  //const matchedPeople = (persons !== undefined) ? persons.filter(person => person.name.toUpperCase().includes(newST.toUpperCase())) : undefined
+  const matchedPeople = persons.filter(person => person.name.toUpperCase().includes(newST.toUpperCase())) 
   
   return (
     <div>
@@ -77,7 +83,7 @@ const App = () => {
       <h3>add a new phone number</h3>
       <PersonForm feh={submitInfo} na={newName} naeh={handleNameChange} nu={newNumber} nueh={handleNumberChange}/>
       <h2>Numbers</h2>
-      <Persons mp={matchedPeople} />
+      <Persons mp={matchedPeople} deh={handleDeleteEntry} />
     </div>
   ) 
 }
