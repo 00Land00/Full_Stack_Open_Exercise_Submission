@@ -4,31 +4,11 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 
+import ErrorDisplay from './components/ErrorDisplay'
+import NewEntryDisplay from './components/NewEntryDisplay'
+
 import Entries from './services/Entries'
 
-const DisplayError = ({message}) => {
-  if(message === null) {
-    return null
-  }
-
-  return (
-    <div className="error">
-      {message}
-    </div>
-  )
-}
-
-const DisplayNewEntry = ({message}) => {
-  if(message === null) {
-    return null
-  }
-
-  return (
-    <div className="newEntry">
-      {message}
-    </div>
-  )
-}
 
 const verifyEntry = (persons, newName, newNumber, setPersons, setError) => {
   // ensure that the name does not exist
@@ -125,17 +105,18 @@ const App = () => {
   const [ newST, setST ] = useState('')    
   const handleSTChange = (event) => setST(event.target.value)
 
-  //const matchedPeople = (persons !== undefined) ? persons.filter(person => person.name.toUpperCase().includes(newST.toUpperCase())) : undefined
   const matchedPeople = persons.filter(person => person.name.toUpperCase().includes(newST.toUpperCase())) 
   
   return (
     <div>
       <h2>Phonebook</h2>
-      <DisplayError message={error} />
-      <DisplayNewEntry message={newEntryMessage} />
-      <Filter st={newST} steh={handleSTChange}/>
+      <ErrorDisplay message={error} />
+      <NewEntryDisplay message={newEntryMessage} />
+      <Filter st={newST} steh={handleSTChange} />
+
       <h3>add a new phone number</h3>
-      <PersonForm feh={submitInfo} na={newName} naeh={handleNameChange} nu={newNumber} nueh={handleNumberChange}/>
+      <PersonForm feh={submitInfo} na={newName} naeh={handleNameChange} nu={newNumber} nueh={handleNumberChange} />
+      
       <h2>Numbers</h2>
       <Persons mp={matchedPeople} deh={handleDeleteEntry} />
     </div>
