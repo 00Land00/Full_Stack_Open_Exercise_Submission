@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DisplayNewEntry = ({message}) => {
+const NewEntryDisplay = ({message}) => {
   if(message === null) {
     return null
   }
