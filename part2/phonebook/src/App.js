@@ -6,10 +6,26 @@ import Persons from './components/Persons'
 
 import Entries from './services/Entries'
 
-const verifyEntry = (persons, newName, newNumber) => {
+const verifyEntry = (persons, newName, newNumber, setPersons) => {
   // ensure that the name does not exist
-  const nameExist = persons.find(p => p.name === newName)
-  if(nameExist !== undefined){
+  const entry = persons.find(p => p.name === newName)
+  if(entry !== undefined){
+    if(entry.number !== newNumber) {
+      if(window.confirm(`${entry.name} already exists in the phonebook, would you like to replace the old phone number with ${newNumber}?`)) {
+        const newP = {...entry, number:newNumber}
+        Entries
+          .updateEntry(newP.id, newP)
+          .then(response => {
+            setPersons(persons.map(p => {
+              if(p.id === newP.id) {
+                p.number = newNumber
+              }
+              return p
+            }))
+          })
+      }
+      return false
+    }
     window.alert(`${newName} was already added to the phonebook`)
     return false
   }
@@ -37,7 +53,9 @@ const App = () => {
     event.preventDefault()
 
     // verify for incomplete form and duplicate entries
-    if(!verifyEntry(persons, newName, newNumber)){
+    if(!verifyEntry(persons, newName, newNumber, setPersons)){
+      setNewName('')
+      setNewNumber('')
       return
     }
 

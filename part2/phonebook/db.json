@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellman",
-      "number": "123-456-789",
+      "number": "ya-ya-ya-ya",
       "id": 1
     },
     {
@@ -14,6 +14,11 @@
       "name": "Smokin Paprikas",
       "number": "644444-4",
       "id": 6
+    },
+    {
+      "name": "Arto Hellman ",
+      "number": "heyy ya",
+      "id": 7
     }
   ]
 }
