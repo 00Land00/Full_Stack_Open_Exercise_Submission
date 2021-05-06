@@ -6,7 +6,31 @@ import Persons from './components/Persons'
 
 import Entries from './services/Entries'
 
-const verifyEntry = (persons, newName, newNumber, setPersons) => {
+const DisplayError = ({message}) => {
+  if(message === null) {
+    return null
+  }
+
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
+
+const DisplayNewEntry = ({message}) => {
+  if(message === null) {
+    return null
+  }
+
+  return (
+    <div className="newEntry">
+      {message}
+    </div>
+  )
+}
+
+const verifyEntry = (persons, newName, newNumber, setPersons, setError) => {
   // ensure that the name does not exist
   const entry = persons.find(p => p.name === newName)
   if(entry !== undefined){
@@ -22,6 +46,10 @@ const verifyEntry = (persons, newName, newNumber, setPersons) => {
               }
               return p
             }))
+          })
+          .catch(error => {
+            setError(`${entry.name} has already been removed from the server`)
+            setTimeout(() => setError(null), 5000)
           })
       }
       return false
@@ -48,12 +76,15 @@ const App = () => {
 
   // state for storing data passed by user input (these ones are dummy data for testing purposes)
   const [persons, setPersons] = useState([])
+  // state for displaying error messages
+  const [error, setError] = useState(null)
+  const [newEntryMessage, setNEM] = useState(null)
   // event handler for the form
   const submitInfo = (event) => {
     event.preventDefault()
 
     // verify for incomplete form and duplicate entries
-    if(!verifyEntry(persons, newName, newNumber, setPersons)){
+    if(!verifyEntry(persons, newName, newNumber, setPersons, setError)){
       setNewName('')
       setNewNumber('')
       return
@@ -71,6 +102,9 @@ const App = () => {
         // reset state
         setNewName('')
         setNewNumber('')
+
+        setNEM(`${person.name} was added to the phonebook!`)
+        setTimeout(() => setNEM(null), 3000)
       })
   }
   const handleDeleteEntry = (person) => {
@@ -97,6 +131,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <DisplayError message={error} />
+      <DisplayNewEntry message={newEntryMessage} />
       <Filter st={newST} steh={handleSTChange}/>
       <h3>add a new phone number</h3>
       <PersonForm feh={submitInfo} na={newName} naeh={handleNameChange} nu={newNumber} nueh={handleNumberChange}/>
