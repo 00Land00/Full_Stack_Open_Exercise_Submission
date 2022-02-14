@@ -7,6 +7,8 @@ const ViewWeatherData = ({country}) => {
   })
 
   const handleWDChange = (wd) => {
+    console.log(wd)
+
     const WD = {
       temp: wd.current.temperature,
       w_spe: wd.current.wind_speed,
@@ -39,17 +41,24 @@ const ViewWeatherData = ({country}) => {
 }
 
 const ViewCountry = ({country}) => {
+  console.log(country)
+  var countryLangs = []
+  for (const property in country.languages) {
+    countryLangs = [...countryLangs, country.languages[property]]
+  }
+  console.log(countryLangs)
+
   return (
     <div>
-      <h1>{country.name}</h1>
-      <div>capital {country.capital}</div>
+      <h1>{country.name.common}</h1>
+      <div>capital {country.capital.map(c => <li key={c}>{c}</li>)}</div>
       <div>population {country.population}</div>
 
       <h3>languages</h3>
       <ul>
-        {country.languages.map(language => <li key={language.name}>{language.name}</li>)}
+        {countryLangs.map(language => <li key={language}>{language}</li>)}
       </ul>
-      <img src={country.flag} alt={`flag of ${country.name}`} width={200} />
+      <img src={country.flags.png} alt={`flag of ${country.name.common}`} width={200} />
     </div>
   )
 }
@@ -85,12 +94,13 @@ const Countries = ({filteredCountries}) => {
 
   const fC = filteredCountries.map((country, index) => {
     return (
-      <div key={country.numericCode}>
-        {country.name} <button onClick={showingCI[index] ? () => handleCIHide(index) : () => handleCIShow(index)}>{showingCI[index] ? 'hide' : 'show'}</button>
+      <div key={country.ccn3}>
+        {country.name.common} <button onClick={showingCI[index] ? () => handleCIHide(index) : () => handleCIShow(index)}>{showingCI[index] ? 'hide' : 'show'}</button>
         {showingCI[index] ? <ViewCountry country={country} /> : undefined}
       </div>
     )
   })
+
   return <div>{fC}</div>
 }
 
