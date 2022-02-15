@@ -1,7 +1,28 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+
+/*
+const tinyFormat = (tokens, req, res) => {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms',
+    JSON.stringify(req.body)
+  ].join(' ')
+}
+
+app.use(morgan(tinyFormat))
+*/
+
+// better solution based on what the exercise mentioned:
+morgan.token('body', req => JSON.stringify(req.body))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
 
 let people = [
   { 
@@ -53,7 +74,7 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
-  
+
   if (!body.name || !body.number) {
     return response.status(400).json({
       error: 'missing name or phone number'
