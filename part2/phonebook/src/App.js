@@ -105,6 +105,7 @@ const App = () => {
   const [ newST, setST ] = useState('')    
   const handleSTChange = (event) => setST(event.target.value)
 
+  console.log(persons)
   const matchedPeople = persons.filter(person => person.name.toUpperCase().includes(newST.toUpperCase())) 
   
   return (

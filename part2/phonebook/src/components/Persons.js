@@ -5,7 +5,7 @@ const Persons = ({mp, deh}) => {
   if(mp.length === 0) {
     return null
   }
-
+  
   const matchedPeople = mp.map(person => {
     return (
       <div key={person.name}>
